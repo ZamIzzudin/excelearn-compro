@@ -1,0 +1,15 @@
+/** @format */
+
+import Button from "./atomic/button";
+
+export default function CTA() {
+  return (
+    <div className="w-full px-[10%] text-center pb-[5%] space-y-8">
+      <h2 className="text-[49px] font-[600]">Ready to Train Your Team?</h2>
+      <p className="text-16px]">
+        Get the full proposal and training details by clicking the button below.
+      </p>
+      <Button label="Request Proposal" rounded />
+    </div>
+  );
+}
