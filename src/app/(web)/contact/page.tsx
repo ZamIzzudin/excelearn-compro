@@ -1,4 +1,7 @@
 /** @format */
+
+"use client";
+
 import Container from "@/components/atomic/container";
 import Promo from "@/components/promo";
 import CTA from "@/components/cta";
