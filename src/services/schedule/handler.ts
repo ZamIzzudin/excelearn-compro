@@ -1,5 +1,7 @@
 /** @format */
 
+import dayjs from "dayjs";
+
 import AxiosClient from "@/lib/axios";
 import {
   ScheduleProps,
@@ -47,6 +49,10 @@ export async function ScheduleListFilteredService(
 
     if (filters?.limit) {
       params.limit = filters.limit;
+    }
+
+    if (filters?.date) {
+      params.date = dayjs(filters.date).format("YYYY-MM-DD");
     }
 
     const { data: response } = await AxiosClient.get("/schedule/public/list", {

@@ -2,6 +2,7 @@
 
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Button from "../atomic/button";
 import Tag from "../atomic/tag";
@@ -14,17 +15,26 @@ import {
   Clock,
 } from "lucide-react";
 
-import { ProductProps } from "@/types/product";
-import Image from "next/image";
+import { useSocmed } from "@/services/socmed/hook";
 
-export default function HeroProductDetail({ 
-  data, 
-  isLoading = false 
-}: { 
-  data?: ProductProps; 
+import { SocmedDataProps } from "@/types/socmed";
+import { ProductProps } from "@/types/product";
+
+export default function HeroProductDetail({
+  data,
+  isLoading = false,
+}: {
+  data?: ProductProps;
   isLoading?: boolean;
 }) {
   const router = useRouter();
+
+  const { data: socmedData = [], isLoading: socmedLoading } = useSocmed();
+
+  const contactList = socmedData.find(
+    (item: SocmedDataProps) =>
+      item.socmed_link && ["WHATSAPP"].includes(item.socmed_name),
+  )?.socmed_link;
 
   // Don't render if no data and not loading
   if (!data && !isLoading) {
@@ -51,7 +61,7 @@ export default function HeroProductDetail({
               if (data?.link && data.link.trim() !== "") {
                 window.open(data.link, "_blank", "noopener,noreferrer");
               } else {
-                router.push("https://wa.me/62895805254925");
+                router.push(`https://wa.me/${contactList}`);
               }
             }}
             label={

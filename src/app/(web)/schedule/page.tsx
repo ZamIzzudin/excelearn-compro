@@ -34,6 +34,7 @@ export default function Schedule() {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useScheduleFiltered({
       search: debouncedSearchValue || undefined,
+      date: selectedDate || undefined,
     });
 
   const allSchedules = data?.pages.flatMap((page) => page.data) || [];

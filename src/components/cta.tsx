@@ -13,8 +13,9 @@ export default function CTA() {
 
   const contactList = socmedData.find(
     (item: SocmedDataProps) =>
-      item.socmed_link && ["WHATSAPP"].includes(item.socmed_name)
+      item.socmed_link && ["WHATSAPP"].includes(item.socmed_name),
   )?.socmed_link;
+
   return (
     <div className="w-full px-[5%] md:px-[7%] lg:px-[10%] text-center py-[10%] md:py-0 md:pb-[5%] space-y-5 md:space-y-8 flex flex-col items-center">
       <h2 className="text-[32px] md:text-[40px] lg:text-[49px] font-semibold">

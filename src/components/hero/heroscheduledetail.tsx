@@ -17,16 +17,26 @@ import {
 } from "lucide-react";
 import dayjs from "dayjs";
 
+import { useSocmed } from "@/services/socmed/hook";
+
+import { SocmedDataProps } from "@/types/socmed";
 import { ScheduleProps } from "@/types/schedule";
 
-export default function HeroScheduleDetail({ 
-  data, 
-  isLoading = false 
-}: { 
-  data?: ScheduleProps; 
+export default function HeroScheduleDetail({
+  data,
+  isLoading = false,
+}: {
+  data?: ScheduleProps;
   isLoading?: boolean;
 }) {
   const router = useRouter();
+
+  const { data: socmedData = [], isLoading: socmedLoading } = useSocmed();
+
+  const contactList = socmedData.find(
+    (item: SocmedDataProps) =>
+      item.socmed_link && ["WHATSAPP"].includes(item.socmed_name),
+  )?.socmed_link;
 
   // Don't render if no data and not loading
   if (!data && !isLoading) {
@@ -49,14 +59,14 @@ export default function HeroScheduleDetail({
           </h1>
           <Button
             onClick={() => {
-              if (data?.link && data.link.trim() !== "") {
+              if (data?.link && data.link.trim() !== "-") {
                 window.open(data.link, "_blank", "noopener,noreferrer");
               } else {
-                router.push("https://wa.me/62895805254925");
+                router.push(`https://wa.me/${contactList}`);
               }
             }}
             label={
-              data?.link && data.link.trim() !== ""
+              data?.link && data.link.trim() !== "-"
                 ? "Register Now →"
                 : "Contact Us"
             }

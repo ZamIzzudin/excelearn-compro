@@ -2,6 +2,8 @@
 
 "use client";
 
+import dayjs from "dayjs";
+
 import {
   useQuery,
   UseQueryResult,
@@ -22,12 +24,20 @@ import {
   ScheduleDetailService,
 } from "./handler";
 
+const filterUpcomingSchedules = (schedules: ScheduleProps[]): ScheduleProps[] => {
+  const today = dayjs().startOf("day");
+
+  return schedules.filter((schedule) => {
+    return !dayjs(schedule.schedule_date).startOf("day").isBefore(today);
+  });
+};
+
 export const useSchedule = (): UseQueryResult<ScheduleProps[]> => {
   return useQuery({
     queryKey: ["schedule-home-list"],
     queryFn: async () => {
       const { data } = await ScheduleListService();
-      return data;
+      return filterUpcomingSchedules(data);
     },
     refetchOnWindowFocus: false,
   });
@@ -46,7 +56,11 @@ export const useScheduleFiltered = (
         ...params,
         page: pageParam,
       });
-      return response;
+
+      return {
+        ...response,
+        data: filterUpcomingSchedules(response.data),
+      };
     },
     getNextPageParam: (lastPage) => {
       return lastPage.pagination.has_next
@@ -65,7 +79,7 @@ export const useScheduleCalendar = (
     queryKey: ["schedule-calendar", params],
     queryFn: async () => {
       const { data } = await ScheduleCalendarService(params);
-      return data;
+      return filterUpcomingSchedules(data);
     },
     enabled: !!params.year && !!params.month,
     refetchOnWindowFocus: false,

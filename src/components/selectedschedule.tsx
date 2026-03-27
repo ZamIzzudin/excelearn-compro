@@ -113,13 +113,9 @@ export default function SelectedSchedule({
       if (!showDate.includes(eachDateStr)) return showDate.push(eachDateStr);
     });
   }
-  // Jika ada tanggal yang dipilih, filter by specific date
+  // Jika ada tanggal yang dipilih, data sudah difilter dari server
   else if (selectedDate) {
-    showData = data.filter((each: ScheduleProps) => {
-      const selectedDateStr = dayjs(selectedDate).format("YYYY-MM-DD");
-      const eachDateStr = dayjs(each.schedule_date).format("YYYY-MM-DD");
-      return selectedDateStr === eachDateStr;
-    });
+    showData = data;
   }
   // Default: tampilkan semua data yang digroup by date
   else {

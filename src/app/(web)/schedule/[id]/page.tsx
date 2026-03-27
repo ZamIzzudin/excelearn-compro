@@ -11,6 +11,10 @@ import { Skeleton, HeroScheduleDetailSkeleton } from "@/components/skeleton";
 import { useAssetContext } from "@/components/AssetProvider";
 
 import { useScheduleDetail } from "@/services/schedule/hook";
+import { useSocmed } from "@/services/socmed/hook";
+
+import { SocmedDataProps } from "@/types/socmed";
+
 import { Home } from "lucide-react";
 
 export default function ScheduleDetail() {
@@ -20,6 +24,13 @@ export default function ScheduleDetail() {
   const { getAssetUrl, getStaticAsset } = useAssetContext();
 
   const { data, isLoading } = useScheduleDetail({ id: id as string });
+
+  const { data: socmedData = [], isLoading: socmedLoading } = useSocmed();
+
+  const contactList = socmedData.find(
+    (item: SocmedDataProps) =>
+      item.socmed_link && ["WHATSAPP"].includes(item.socmed_name),
+  )?.socmed_link;
 
   const bodyPattern = getStaticAsset("body_pattern");
   const bannerPlain = getStaticAsset("banner_plain");
@@ -76,7 +87,8 @@ export default function ScheduleDetail() {
               Schedule Not Found
             </h2>
             <p className="text-[16px] md:text-[18px] text-gray-600">
-              The schedule you are looking for does not exist or has been removed.
+              The schedule you are looking for does not exist or has been
+              removed.
             </p>
             <Button
               label="Back to Home"
@@ -105,25 +117,25 @@ export default function ScheduleDetail() {
       >
         <p>{data?.schedule_description}</p>
       </div>
-      {Array.isArray(data?.benefits) && data?.benefits[0] !== '-' && (
- <div className="pb-[5%] px-[5%] md:px-[15%] space-y-10 w-full">
-        <h4 className="text-[49px] text-center font-semibold">
-          {"What You'll Learn"}
-        </h4>
-        <div className="flex items-center justify-center flex-wrap gap-5">
-          {data?.benefits?.map((each: string, index: number) => (
-            <div
+      {Array.isArray(data?.benefits) && data?.benefits[0] !== "-" && (
+        <div className="pb-[5%] px-[5%] md:px-[15%] space-y-10 w-full">
+          <h4 className="text-[49px] text-center font-semibold">
+            {"What You'll Learn"}
+          </h4>
+          <div className="flex items-center justify-center flex-wrap gap-5">
+            {data?.benefits?.map((each: string, index: number) => (
+              <div
                 className="text-[14px] min-h-[30dvh] justify-between w-[100%] md:w-[23%] bg-white/50 backdrop-blur-md border border-white/20 shadow-xl p-5 rounded-3xl flex flex-col items-center gap-5"
                 key={index}
               >
                 <p className="text-center">{each}</p>
                 <div className="w-[50%] border" />
               </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
       )}
-     
+
       <div className="min-h-[100px] w-full px-[10dvw] py-[10dvh]">
         <div
           className="bg-blue-200 w-full min-h-[200px] rounded-2xl flex items-center justify-between px-[5%]"
@@ -143,7 +155,7 @@ export default function ScheduleDetail() {
                 if (data?.link && data.link.trim() !== "") {
                   window.open(data.link, "_blank", "noopener,noreferrer");
                 } else {
-                  router.push("https://wa.me/62895805254925");
+                  router.push(`https://wa.me/${contactList}`);
                 }
               }}
               label={
