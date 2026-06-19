@@ -24,7 +24,7 @@ import YOUTUBE_ICON from "@/assets/icons/youtube.svg";
 import LINKEDIN_ICON from "@/assets/icons/linkedin.svg";
 import TWITTER_ICON from "@/assets/icons/twitter.svg";
 import WHATSAPP_ICON from "@/assets/icons/whatsapp.svg";
-import GMAIL_ICON from "@/assets/icons/gmail.svg";
+import GMAIL_ICON from "@/assets/icons/outlook.png";
 
 const contactIcons: Record<string, SocmedProps> = {
   GMAIL: {
@@ -61,7 +61,14 @@ export default function Footer() {
     .filter(
       (item: SocmedDataProps) =>
         item.socmed_link &&
-        !["GMAIL", "WHATSAPP", "GMAPS"].includes(item.socmed_name)
+        ![
+          "GMAIL",
+          "WHATSAPP",
+          "GMAPS",
+          "SHORT LOCATION",
+          "LOCATION",
+          "SALES_EMAIL",
+        ].includes(item.socmed_name),
     )
     .map((item: SocmedDataProps) => {
       const iconKey = item.socmed_name;
@@ -76,7 +83,7 @@ export default function Footer() {
   const contactList = socmedData
     .filter(
       (item: SocmedDataProps) =>
-        item.socmed_link && ["GMAIL", "WHATSAPP"].includes(item.socmed_name)
+        item.socmed_link && ["GMAIL", "WHATSAPP"].includes(item.socmed_name),
     )
     .map((item: SocmedDataProps) => {
       const iconKey = item.socmed_name;
@@ -124,7 +131,11 @@ export default function Footer() {
         <div className="flex gap-8 md:gap-3 md:gap-5 mt-3 md:mt-5">
           {contactList.map((each: SocmedProps, index: number) => (
             <Link key={index} href={each.url}>
-              <Image src={each.icon} alt={`socmed ${index}`} />
+              <Image
+                src={each.icon}
+                alt={`socmed ${index}`}
+                className="md:w-[65px] md:h-[65px] w-[50px] h-[50px] "
+              />
             </Link>
           ))}
         </div>
@@ -196,7 +207,7 @@ export default function Footer() {
                   <span key={service._id}>
                     <Link
                       href={`/service?type=${serviceToSlug(
-                        service.service_name
+                        service.service_name,
                       )}`}
                     >
                       {service.service_name}

@@ -19,7 +19,7 @@ import YOUTUBE_ICON from "@/assets/icons/youtube-blue.svg";
 import LINKEDIN_ICON from "@/assets/icons/linkedin-blue.svg";
 import TWITTER_ICON from "@/assets/icons/twitter-blue.svg";
 import WHATSAPP_ICON from "@/assets/icons/whatsapp-white.svg";
-import GMAIL_ICON from "@/assets/icons/gmail-white.svg";
+import GMAIL_ICON from "@/assets/icons/outlook-white.png";
 import LOCATION_ICON from "@/assets/icons/location-white.svg";
 
 const contactIcons: Record<string, SocmedProps> = {
@@ -58,11 +58,22 @@ export default function ContactList() {
   const bodyPattern = getStaticAsset("body_pattern");
   const contactImage = getAssetUrl("contact_image");
 
+  const shirt_loc = socmedData.find(
+    (each: SocmedDataProps) => each.socmed_name === "SHORT LOCATION",
+  )?.socmed_link;
+
   const socmedList = socmedData
     .filter(
       (item: SocmedDataProps) =>
         item.socmed_link &&
-        !["GMAIL", "WHATSAPP", "GMAPS"].includes(item.socmed_name)
+        ![
+          "GMAIL",
+          "WHATSAPP",
+          "GMAPS",
+          "SALES_EMAIL",
+          "SHORT LOCATION",
+          "LOCATION",
+        ].includes(item.socmed_name),
     )
     .map((item: SocmedDataProps) => {
       const iconKey = item.socmed_name;
@@ -78,7 +89,7 @@ export default function ContactList() {
     .filter(
       (item: SocmedDataProps) =>
         item.socmed_link &&
-        ["GMAIL", "WHATSAPP", "GMAPS", "PHONE"].includes(item.socmed_name)
+        ["GMAIL", "WHATSAPP", "GMAPS", "PHONE"].includes(item.socmed_name),
     )
     .map((item: SocmedDataProps) => {
       const iconKey = item.socmed_name;
@@ -86,7 +97,7 @@ export default function ContactList() {
         return {
           icon: contactIcons[iconKey]?.icon || INSTAGRAM_ICON,
           url: item.socmed_link,
-          name: "Equity Tower 26th Floor",
+          name: shirt_loc || "Equity Tower 26th Floor",
         };
       if (iconKey === "WHATSAPP")
         return {
@@ -130,10 +141,16 @@ export default function ContactList() {
               <button
                 type="button"
                 onClick={() => router.push(each.url)}
-                className="cursor-pointer bg-linear-to-r from-[#141A2E] h-[100px] to-[#76dbff] text-white p-4 md:p-5 rounded-full w-full md:min-w-[45%] md:w-[50%] flex items-center gap-3 text-sm md:text-base"
+                className="cursor-pointer bg-linear-to-r from-[#141A2E] h-[100px] to-[#76dbff] text-white p-4 md:p-5 rounded-full w-full md:max-w-[60%] flex items-center gap-3 text-sm md:text-base"
                 key={index}
               >
-                <Image src={each.icon} alt={`socmed ${index}`} />
+                <Image
+                  src={each.icon}
+                  alt={`socmed ${index}`}
+                  height={35}
+                  width={35}
+                  className="aspect-square"
+                />
                 {each.name}
               </button>
             ))}

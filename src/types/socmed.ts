@@ -1,7 +1,7 @@
 /** @format */
 
 export interface SocmedProps {
-  icon: string;
+  icon: any;
   url: string;
   label?: string;
 }
